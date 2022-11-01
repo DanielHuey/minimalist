@@ -15,28 +15,33 @@ if %input%==1 (
 	echo.
 	echo Building your debug apk.
 	flutter build apk --debug
-	goto main
+	goto reset
 )else if %input%==2 (
 	echo.
 	if EXIST build\app\outputs\flutter-apk\app-debug.apk (
-		flutter run --use-application-binary="build\app\outputs\flutter-apk\app-debug.apk"
-		goto main
+		flutter run  --no-build --use-application-binary="build\app\outputs\flutter-apk\app-debug.apk"
+		pause
+		goto reset
 	)else (
 		echo.
 		echo Building your debug apk.
 		flutter build apk --debug
-		goto main
+		goto reset
 	)
 )else if %input%==3 (
 	echo.
 	flutter build apk --target-platform android-arm64
 	flutter install --use-application-binary="build\app\outputs\flutter-apk\app-release.apk"
-	goto main
+	goto reset
 )else if %input%==4 (
 	echo.
 	exit
 )else (
 	echo.
 	echo Please choose an option from the list
-	goto main
+	goto reset
 )
+
+
+:reset
+goto main
