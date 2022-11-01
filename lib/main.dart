@@ -1,4 +1,3 @@
-import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:minimalist/res/config.dart';
 
@@ -23,9 +22,8 @@ class _MinimalAppState extends State<MinimalApp>
   void initState() {
     super.initState();
     controller1 = AnimationController(
-        vsync: this,
-        duration: const Duration(milliseconds: 400));
-    anim = CurvedAnimation(parent: controller1, curve: Curves.elasticInOut)
+        vsync: this, duration: const Duration(milliseconds: 1500));
+    anim = CurvedAnimation(parent: controller1, curve: Curves.bounceOut)
       ..addListener(() {
         setState(() {});
       });
@@ -47,7 +45,7 @@ class _MinimalAppState extends State<MinimalApp>
       darkTheme: globalTheme.theme(false),
       themeMode: globalTheme.currentMode(),
       home: Scaffold(
-        body: homeBody(),
+        body: homeBody(anim),
         appBar: AppBar(
           elevation: 0,
           backgroundColor: switchColor(switchToggle),
@@ -71,7 +69,6 @@ class _MinimalAppState extends State<MinimalApp>
           ],
         ),
         floatingActionButton: FloatingActionButton.extended(
-          elevation: 5 + (anim.value*10),
           onPressed: () {
             setState(() {
               controller1.isDismissed
@@ -88,7 +85,7 @@ class _MinimalAppState extends State<MinimalApp>
   }
 }
 
-Widget homeBody() {
+Widget homeBody(Animation animation) {
   return Column(
     children: [
       Expanded(
@@ -96,9 +93,9 @@ Widget homeBody() {
         child: Container(
           decoration: BoxDecoration(
             color: _MinimalAppState.switchColor(_MinimalAppState.switchToggle),
-            borderRadius: const BorderRadius.only(
-              bottomLeft: Radius.circular(30),
-              bottomRight: Radius.circular(30),
+            borderRadius: BorderRadius.only(
+              bottomLeft: Radius.circular(animation.value * 80),
+              bottomRight: Radius.circular(animation.value * 80),
             ),
           ),
         ),
