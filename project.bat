@@ -22,7 +22,10 @@ if %input%==1 (
 		flutter run --use-application-binary="build\app\outputs\flutter-apk\app-debug.apk"
 		goto main
 	)else (
-		echo 1|goto main
+		echo.
+		echo Building your debug apk.
+		flutter build apk --debug
+		goto main
 	)
 )else if %input%==3 (
 	echo.
