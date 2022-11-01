@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:minimalist/res/config.dart';
 
@@ -12,11 +13,23 @@ class MinimalApp extends StatefulWidget {
   State<MinimalApp> createState() => _MinimalAppState();
 }
 
-class _MinimalAppState extends State<MinimalApp> {
+class _MinimalAppState extends State<MinimalApp>
+    with SingleTickerProviderStateMixin {
+  late AnimationController controller1;
+  late Animation<double> anim;
+
   static bool switchToggle = false;
   @override
   void initState() {
     super.initState();
+    controller1 = AnimationController(
+        upperBound: 10,
+        vsync: this,
+        duration: const Duration(milliseconds: 400));
+    anim = CurvedAnimation(parent: controller1, curve: Curves.elasticInOut)
+      ..addListener(() {
+        setState(() {});
+      });
     globalTheme.addListener(() {
       debugPrint('Listening');
       setState(() {});
@@ -59,7 +72,14 @@ class _MinimalAppState extends State<MinimalApp> {
           ],
         ),
         floatingActionButton: FloatingActionButton.extended(
-          onPressed: () {},
+          elevation: anim.value,
+          onPressed: () {
+            setState(() {
+              controller1.isDismissed
+                  ? controller1.forward()
+                  : controller1.reverse();
+            });
+          },
           icon: const Icon(Icons.home),
           label: const Text('Home'),
         ),
@@ -73,7 +93,7 @@ Widget homeBody() {
   return Column(
     children: [
       Expanded(
-        flex: 7,
+        flex: 8,
         child: Container(
           decoration: BoxDecoration(
             color: _MinimalAppState.switchColor(_MinimalAppState.switchToggle),
@@ -84,7 +104,7 @@ Widget homeBody() {
           ),
         ),
       ),
-      Expanded(flex: 3, child: Container()),
+      Expanded(flex: 2, child: Container()),
     ],
   );
 }
