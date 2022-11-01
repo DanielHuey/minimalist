@@ -23,7 +23,6 @@ class _MinimalAppState extends State<MinimalApp>
   void initState() {
     super.initState();
     controller1 = AnimationController(
-        upperBound: 10,
         vsync: this,
         duration: const Duration(milliseconds: 400));
     anim = CurvedAnimation(parent: controller1, curve: Curves.elasticInOut)
@@ -72,7 +71,7 @@ class _MinimalAppState extends State<MinimalApp>
           ],
         ),
         floatingActionButton: FloatingActionButton.extended(
-          elevation: anim.value,
+          elevation: 5 + (anim.value*10),
           onPressed: () {
             setState(() {
               controller1.isDismissed
